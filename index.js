@@ -20,22 +20,23 @@ let vertices = [
 function adjacentEdges(v) {
     
     let adj = edges.filter(e => e.includes(v.name))
-    return adj.map(e => e.find(e2 => e2!==v)).map(e3 => vertices.find(v2 => v2.name===e3))
+    console.log(adj.map(e => e.find(e2 => e2!==v.name)).map(e3 => vertices.find(v2 => v2.name===e3)).filter(v3 => !v3.discovered)    )
+    return adj.map(e => e.find(e2 => e2!==v.name)).map(e3 => vertices.find(v2 => v2.name===e3)).filter(v3 => !v3.discovered)
 }
 
-function depthFirstSearch(v, e) {
+function depthFirstSearch(root, e) {
     let s = []
-    let visited = []
-    s.push(v)
+    let visited = [root]
+    s.push(root)
     while (s.length > 0) {
-        v = s.pop()
+        let v = s.pop()
         if (!v.discovered) {
 
             v.discovered=true
-        
+            console.log(`adjacent edges of ${v} are: ${adjacentEdges(v)}`)
             adjacentEdges(v).forEach( e => {
-                s.push(e)
                 if (!e.discovered) { visited.push(e) }
+                s.push(e)
             })
         }
     }
